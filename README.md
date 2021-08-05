@@ -14,8 +14,7 @@ In this repository was build a system to do bus reservations. For now, the repos
 
 - PHP 8.0 or higher
 - PostgreSQL 13.2 or higher
-- Medoo 2.1 or higher
-- PHP dotenv 5.3 or higher
+
 
 # Run
 
