@@ -10,9 +10,14 @@ In this repository was build a system to do bus reservations. For now, the repos
 - See current and past bookings
 
 
-# Run
+# Requirements
 
-To run it, it is necessary php >= 8.0 and postgresql >= 13.2 as well as the packages in composer.json file.
+- PHP 8.0 or higher
+- PostgreSQL 13.2 or higher
+- Medoo 2.1 or higher
+- PHP dotenv 5.3 or higher
+
+# Run
 
 Commands to run it:
 
