@@ -1,6 +1,5 @@
 # About BusReservationSystem
 In this repository was build a system to do bus reservations. For now, the repository don't have in consideration payment and transaction but has the following things:
-
 - Creation of an account
 - Login
 - Information of user account
