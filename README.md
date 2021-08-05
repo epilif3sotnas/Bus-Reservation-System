@@ -10,7 +10,7 @@ In this repository was build a system to do bus reservations. For now, the repos
 
 
 # Run
-To run it, it is necessary php >= 8.0.3 and postgresql >= 13.2 as well as packages in composer.json file.
+To run it, it is necessary php >= 8.0 and postgresql >= 13.2 as well as the packages in composer.json file.
 
 Commands to run it:
 ```
