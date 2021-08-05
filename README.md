@@ -24,6 +24,14 @@ cd {PATH_REPOSITORY}/src
 php main.php
 ```
 
+
+# Technologies used
+
+- [PHP](https://www.php.net/manual/en/)
+- [PostgreSQL](https://www.postgresql.org/docs/13/index.html)
+- [Medoo](https://medoo.in/doc)
+- [PHP dotenv](https://github.com/vlucas/phpdotenv)
+
 # License
 
 Licensed under the MIT license.
