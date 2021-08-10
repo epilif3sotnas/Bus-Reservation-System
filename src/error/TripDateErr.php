@@ -5,7 +5,7 @@ class TripDateErr {
     private $error;
 
     // error messages
-    private const TIME_ERROR = '\nDate inserted not supported.\n';
+    private const TIME_ERROR = "\nDate inserted not supported.\n";
 
     public function __construct ($date, $error) {
         $this->date = $date;

@@ -44,9 +44,9 @@ while ($isTrue) {
             break;
   
           case '1':   // create account -> create account
-            $username = readline("Insert your username: ");
-            $password = readline("Insert your password: ");                 // improvement -> hide input
-            $passwordConfirmation = readline("Confirm your password: ");    // improvement -> hide input
+            $username = readline('Insert your username: ');
+            $password = readline('Insert your password: ');                 // improvement -> hide input
+            $passwordConfirmation = readline('Confirm your password: ');    // improvement -> hide input
       
             // improvement -> password quality
             
@@ -74,7 +74,7 @@ while ($isTrue) {
             break;
             
           default:
-            echo "You choose $optionCreateAccount.\nOption not available at the moment.";
+            echo "\nYou choose $optionCreateAccount.\nOption not available at the moment.";
         }
       }
       break;
@@ -94,8 +94,8 @@ while ($isTrue) {
             break;
   
           case '1':   // login -> login
-            $username = readline("Insert your username: ");
-            $password = readline("Insert your password: ");   // improvement -> hide input
+            $username = readline('Insert your username: ');
+            $password = readline('Insert your password: ');   // improvement -> hide input
   
             try {
               $user = new User($username, $password);
@@ -127,15 +127,15 @@ while ($isTrue) {
 
                 switch ($optionAccount) {
                   case '0':   // login -> account -> log out
-                    unset($_SESSION["Username"]);
-                    unset($_SESSION["Password"]);
+                    unset($_SESSION['Username']);
+                    unset($_SESSION['Password']);
 
                     $isTrueAccount = false;
                     break;
 
                   case 'ex':  // login -> account -> exit
-                    unset($_SESSION["Username"]);
-                    unset($_SESSION["Password"]);
+                    unset($_SESSION['Username']);
+                    unset($_SESSION['Password']);
 
                     $isTrue               = false;
                     $isTrueAccount        = false;
@@ -148,12 +148,12 @@ while ($isTrue) {
                   case '1':   // login -> account -> account information
                     echo "\n\n------------------------Account information------------------------";
 
-                    $userInfo = $usersDB->getInformationUser($_SESSION["Username"]);
+                    $userInfo = $usersDB->getInformationUser($_SESSION['Username']);
 
-                    echo "\n\nUsername: " . $_SESSION["Username"];
-                    echo "\nPassword: " . str_repeat("*", strlen($_SESSION["Password"]));
-                    echo "\nDate of creation: " . $userInfo["DateAccountCreation"];
-                    echo "\nDate of last password modification: " . $userInfo["DatePasswordModification"];
+                    echo "\n\nUsername: " . $_SESSION['Username'];
+                    echo "\nPassword: " . str_repeat('*', strlen($_SESSION['Password']));
+                    echo "\nDate of creation: " . $userInfo['DateAccountCreation'];
+                    echo "\nDate of last password modification: " . $userInfo['DatePasswordModification'];
 
                     echo "\n\n------------------------Options------------------------";
                     echo "\nClick any button to return\n";
@@ -222,18 +222,18 @@ while ($isTrue) {
                             $bus = $tripsDB->getBus($eachTrip['Bus']);
                             // check if occur any error
                             
-                            echo '\n\nID: ' . $eachTrip['ID'];
-                            echo '\nFrom: ' . $eachTrip['From'];
-                            echo '\nTo: ' . $eachTrip['To'];
-                            echo '\nBus: ' . $bus['Name'];
-                            echo '\nDriver: ' . $driver['Name'];
-                            echo '\nPassengers: ' . $eachTrip['Passengers'];
-                            echo '\nDate: ' . $eachTrip['Date'];
-                            echo '\nTime: ' . $eachTrip['Time'];
+                            echo "\n\nID: " . $eachTrip['ID'];
+                            echo "\nFrom: " . $eachTrip['From'];
+                            echo "\nTo: " . $eachTrip['To'];
+                            echo "\nBus: " . $bus['Name'];
+                            echo "\nDriver: " . $driver['Name'];
+                            echo "\nPassengers: " . $eachTrip['Passengers'];
+                            echo "\nDate: " . $eachTrip['Date'];
+                            echo "\nTime: " . $eachTrip['Time'];
                           }
   
                           echo "\n\nDo you want to book one this trips?";
-                          echo '\nInsert (y) if you want and any other to cancel: ';
+                          echo "\nInsert (y) if you want and any other to cancel: ";
                           $continueResponse = readline();
   
                           if ($continueResponse != 'y') {
@@ -243,7 +243,7 @@ while ($isTrue) {
                           // book the trip
   
                           echo "\n\n------------------------Choose your trip------------------------";
-                          echo '\nInsert the trip ID that you want to book: ';
+                          echo "\nInsert the trip ID that you want to book: ";
                           $bookID = readline();
   
                           foreach ($tripsReturned as $eachTrip) {
@@ -257,7 +257,7 @@ while ($isTrue) {
                                 $currentBookingsDB->makeBook($eachTrip['ID'], $_SESSION["Username"]);
                                 
                                 // check if occur any error
-                                echo '\n\nBook done successfully! 😎';
+                                echo "\n\nBook done successfully! 😎";
                               }
                               break;
                             }
@@ -276,22 +276,22 @@ while ($isTrue) {
 
                     echo "\n\n------------------------Current Bookings------------------------";
 
-                    $returnedBookings = $currentBookingsDB->getBookingByUser($_SESSION["Username"]);
+                    $returnedBookings = $currentBookingsDB->getBookingByUser($_SESSION['Username']);
 
                     foreach ($returnedBookings as $eachBooking) {
-                      echo '\n\nID: ' . $eachBooking['ID'];
-                      echo '\nTrip: ' . $eachBooking['Trip'];
-                      echo '\nDateTimeBooking: ' . $eachBooking['DateTimeBooking'];
+                      echo "\n\nID: " . $eachBooking['ID'];
+                      echo "\nTrip: " . $eachBooking['Trip'];
+                      echo "\nDateTimeBooking: " . $eachBooking['DateTimeBooking'];
                     }
 
                     echo "\n\n------------------------Past Bookings------------------------";
 
-                    $returnedBookings = $pastBookingsDB->getBookingByUser($_SESSION["Username"]);
+                    $returnedBookings = $pastBookingsDB->getBookingByUser($_SESSION['Username']);
 
                     foreach ($returnedBookings as $eachBooking) {
-                      echo '\n\nID: ' . $eachBooking['ID'];
-                      echo '\nTrip: ' . $eachBooking['Trip'];
-                      echo '\nDateTimeBooking: ' . $eachBooking['DateTimeBooking'];
+                      echo "\n\nID: " . $eachBooking['ID'];
+                      echo "\nTrip: " . $eachBooking['Trip'];
+                      echo "\nDateTimeBooking: " . $eachBooking['DateTimeBooking'];
                     }
                       
                     echo "\n\n------------------------Options------------------------";

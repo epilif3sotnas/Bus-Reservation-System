@@ -5,8 +5,8 @@ class TripLocationErr {
     private $error;
 
     // error messages
-    private const STRING_ERROR = '\nData inserted is not a string.\n';
-    private const ALPHABETIC_ERROR = '\nData inserted should only have alphabetic characters.\n';
+    private const STRING_ERROR = "\nData inserted is not a string.\n";
+    private const ALPHABETIC_ERROR = "\nData inserted should only have alphabetic characters.\n";
 
     public function __construct ($location, $error) {
         $this->location = $location;
