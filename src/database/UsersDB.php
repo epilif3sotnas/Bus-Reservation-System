@@ -44,6 +44,17 @@ class UsersDB {
             "Username" => $username,
         ]);
     }
+
+    public function changePassword ($username, $password) {
+        GLOBAL $database;
+        $database->update('Users', [
+            'Password' => $password,
+            'DatePasswordModification' => date('c'),
+        ],
+        [
+            'Username' => $username
+        ]);
+    }
 }
 
 ?>

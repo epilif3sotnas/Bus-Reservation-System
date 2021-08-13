@@ -156,9 +156,41 @@ while ($isTrue) {
                     echo "\nDate of last password modification: " . $userInfo['DatePasswordModification'];
 
                     echo "\n\n------------------------Options------------------------";
-                    echo "\nClick any button to return\n";
+                    echo "\n1 - Change password\n";
+                    echo "\nClick other button to return\n";
 
-                    readline();
+                    $optionAccountInfo = readline();
+
+                    if ($optionAccountInfo == '1') {
+                      echo "\n\nInsert your password: ";
+
+                      $password = readline();
+
+                      try {
+                        $auth = $usersDB->authenticationUser($_SESSION['Username'], $password);   // authenticate user
+          
+                        if (!$auth) {
+                          echo "\nError ocurred";
+                          break;
+                        }
+
+                        echo "\n\nInsert new password: ";
+                        $newPassword = readline();
+
+                        echo "\nConfirm new password: ";
+                        $newPasswordConfirmation = readline();
+
+                        if ($newPassword == $newPasswordConfirmation) {
+                          $newUser = new User($_SESSION['Username'], $newPassword);
+                          $usersDB->changePassword($newUser->getUsername(), $newUser->generateHashPassword());   // change password
+                        } else {
+                          echo "\nPasswords inserted don't match";
+                          break;
+                        }
+                      } catch (PDOException $e) {
+                        echo $e->getMessage();
+                      }
+                    }
                     break;
 
                   case '2':   // login -> account -> booking
