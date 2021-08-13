@@ -19,9 +19,11 @@ class UsersDB {
     
     public function insertUser ($username, $password) {
         GLOBAL $database;
-        $database->insert("Users", [
-            "Username" => $username,
-            "Password" => $password,
+        $database->insert('Users', [
+            'Username' => $username,
+            'Password' => $password,
+            'DateAccountCreation' => date('c'),
+            'DatePasswordModification' => date('c'),
         ]);
         return $database->error;    // return errors messages
     }
