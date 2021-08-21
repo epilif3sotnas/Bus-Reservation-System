@@ -24,6 +24,7 @@ class PastBookingsDB {
             'Trip',
             'Passenger',
             'DateTimeBooking',
+            'DateTimeClosed',
         ], [
             'Passenger' => $username,
         ]);

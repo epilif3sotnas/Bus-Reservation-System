@@ -9,9 +9,9 @@ include 'database/CurrentBookingsDB.php';
 include 'database/PastBookingsDB.php';
 
 $usersDB = new UsersDB();
-$tripsDB = new TripsDb();
-$currentBookingsDB = new CurrentBookingsDb();
-$pastBookingsDB = new PastBookingsDb();
+$tripsDB = new TripsDB();
+$currentBookingsDB = new CurrentBookingsDB();
+$pastBookingsDB = new PastBookingsDB();
 
 $isTrue = true;
 
@@ -26,7 +26,7 @@ while ($isTrue) {
   switch ($option) {
     case 'ex':   // exit
       $isTrue = false;
-      echo "We hope that you enjoy! 😎";
+      echo "\nWe hope that you enjoy! 😎\n";
       break;
 
     case '1':   // create account
@@ -70,7 +70,7 @@ while ($isTrue) {
                 echo $e->getMessage();
               }
       
-            }else{ echo "\nPassword and Confirmation Password don't match\n"; }
+            } else{ echo "\nPassword and Confirmation Password don't match\n"; }
             break;
             
           default:
@@ -142,7 +142,7 @@ while ($isTrue) {
                     $isTrueLogin          = false;
                     $isTrueCreateAccount  = false;
 
-                    echo "We hope that you enjoy! 😎";
+                    echo "\nWe hope that you enjoy! 😎\n";
                     break;
 
                   case '1':   // login -> account -> account information

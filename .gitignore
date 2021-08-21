@@ -4,3 +4,5 @@
 
 .env
 composer.lock
+
+/src/database/ddl

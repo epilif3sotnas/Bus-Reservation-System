@@ -22,6 +22,7 @@ class CurrentBookingsDB {
         return $database->insert('CurrentBookings', [
             'Trip'  => $Trip,
             'Passenger' => $username,
+            'DateTimeBooking' => date('c'),
         ]);
     }
 
