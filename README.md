@@ -13,7 +13,7 @@ In this repository was build a system to do bus reservations. For now, the repos
 # Requirements
 
 - PHP 8.0 or higher
-- PostgreSQL 13.2 or higher
+- PostgreSQL 13 or higher
 
 
 # Run
@@ -25,7 +25,7 @@ cd {PATH_REPOSITORY}/src
 ```
 
 ```
-php main.php
+php Main.php
 ```
 
 
