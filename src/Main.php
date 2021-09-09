@@ -76,6 +76,7 @@ while ($isTrue) {
                 
                 $isTrueCreateAccount = false;
                 echo "Account created successfully 😎";
+                $system->sleepThree();
       
               } catch (PDOException $e) {
                 echo $e->getMessage();
