@@ -1,6 +1,6 @@
 # Changelog
 
-## [v1.1.0](https://github.com/epilif3sotnas/BusReservationSystem/releases/tag/v1.0.1)
+## [v1.0.1](https://github.com/epilif3sotnas/BusReservationSystem/releases/tag/v1.0.1)
 
 Fixes:
 
