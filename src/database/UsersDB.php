@@ -28,7 +28,11 @@ class UsersDB {
         return $database->error;    // return errors messages
     }
 
-    public function authenticationUser ($username, $password) {
+    public function authenticationUser ($username, $password, $sessionSecurity = null) {
+        if (isset($_SESSION['P'])) {
+            return $this->verifyPassword($password, $sessionSecurity);
+        }
+
         GLOBAL $database;
         $passwordFromDB = $database->get("Users", "Password", [
             "Username" => $username,
@@ -56,6 +60,13 @@ class UsersDB {
         [
             'Username' => $username
         ]);
+    }
+
+    private function verifyPassword ($password, $sessionSecurity) {
+        if ($password == $sessionSecurity->decryptRSA($_SESSION['P'])) {
+            return true;
+        }
+        return false;
     }
 }
 

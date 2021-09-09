@@ -196,7 +196,7 @@ while ($isTrue) {
 
                       try {
                         $auth = $usersDB->authenticationUser($sessionSecurity->decryptRSA($_SESSION['U']),
-                                        $password);   // authenticate user
+                                        $password, $sessionSecurity);   // authenticate user
           
                         if (!$auth) {
                           echo "\nError ocurred";
@@ -217,6 +217,7 @@ while ($isTrue) {
                           // check if occur any error
 
                           echo "\nPassword changed successfully";
+                          $_SESSION['P'] = $sessionSecurity->encryptRSA($newUser->getPassword());
                           $system->sleepFive();
                         } else {
                           echo "\nPasswords inserted don't match";
