@@ -2,6 +2,7 @@
 
 include 'class/User.php';
 include 'class/Trip.php';
+include 'class/SessionSecuirty.php';
 
 include 'database/UsersDB.php';
 include 'database/TripsDB.php';
@@ -9,6 +10,8 @@ include 'database/CurrentBookingsDB.php';
 include 'database/PastBookingsDB.php';
 
 include 'system/ClearCLI.php';
+
+$sessionSecurity = new SessionSecurity();
 
 $usersDB = new UsersDB();
 $tripsDB = new TripsDB();
@@ -129,8 +132,8 @@ while ($isTrue) {
               $isTrueLogin = false;
               echo "\nLogged in...";
 
-              $_SESSION["Username"] = $user->getUsername();   // improvement -> encrypt
-              $_SESSION["Password"] = $user->getPassword();   // improvement -> encrypt
+              $_SESSION['U'] = $sessionSecurity->encryptRSA($user->getUsername());   // session username encrypted
+              $_SESSION['P'] = $sessionSecurity->encryptRSA($user->getPassword());   // session password encrypted
 
               $isTrueAccount = true;
               while ($isTrueAccount) {
@@ -146,8 +149,8 @@ while ($isTrue) {
                 $optionAccount = readline();
                 switch ($optionAccount) {
                   case '0':   // login -> account -> log out
-                    unset($_SESSION['Username']);
-                    unset($_SESSION['Password']);
+                    unset($_SESSION['U']);
+                    unset($_SESSION['P']);
 
                     echo "\nLogging out...";
                     $isTrueLogin = false;
@@ -156,8 +159,8 @@ while ($isTrue) {
                     break;
 
                   case 'ex':  // login -> account -> exit
-                    unset($_SESSION['Username']);
-                    unset($_SESSION['Password']);
+                    unset($_SESSION['U']);
+                    unset($_SESSION['P']);
 
                     $isTrue               = false;
                     $isTrueAccount        = false;
@@ -174,10 +177,10 @@ while ($isTrue) {
 
                     echo "\n\n------------------------Account information------------------------";
 
-                    $userInfo = $usersDB->getInformationUser($_SESSION['Username']);
+                    $userInfo = $usersDB->getInformationUser($sessionSecurity->decryptRSA($_SESSION['U']));
 
-                    echo "\n\nUsername: " . $_SESSION['Username'];
-                    echo "\nPassword: " . str_repeat('*', strlen($_SESSION['Password']));
+                    echo "\n\nUsername: " . $sessionSecurity->decryptRSA($_SESSION['U']);
+                    echo "\nPassword: " . str_repeat('*', strlen($sessionSecurity->decryptRSA($_SESSION['P'])) + 3);
                     echo "\nDate of creation: " . $userInfo['DateAccountCreation'];
                     echo "\nDate of last password modification: " . $userInfo['DatePasswordModification'];
 
@@ -191,7 +194,8 @@ while ($isTrue) {
                       $password = readline();
 
                       try {
-                        $auth = $usersDB->authenticationUser($_SESSION['Username'], $password);   // authenticate user
+                        $auth = $usersDB->authenticationUser($sessionSecurity->decryptRSA($_SESSION['U']),
+                                        $password);   // authenticate user
           
                         if (!$auth) {
                           echo "\nError ocurred";
@@ -206,8 +210,10 @@ while ($isTrue) {
                         $newPasswordConfirmation = readline();
 
                         if ($newPassword == $newPasswordConfirmation) {
-                          $newUser = new User($_SESSION['Username'], $newPassword);
+                          $newUser = new User($sessionSecurity->decryptRSA($_SESSION['U']), $newPassword);
                           $usersDB->changePassword($newUser->getUsername(), $newUser->generateHashPassword());
+
+                          // check if occur any error
 
                           echo "\nPassword changed successfully";
                           $system->sleepFive();
@@ -248,7 +254,7 @@ while ($isTrue) {
                           echo "\nFrom: ";
                           $from = readline();
   
-                          $errObj = $trip->standardString($from);
+                          $errObj = $trip->standardString($from);   // change variable name errObj
                           if ($errObj->getError()) {
                             echo $errObj->getError();
                             $system->sleepFive();
@@ -259,7 +265,7 @@ while ($isTrue) {
                           echo "\nTo: ";
                           $to = readline();
   
-                          $errObj = $trip->standardString($to);
+                          $errObj = $trip->standardString($to);   // change variable name errObj
                           if ($errObj->getError()) {
                             echo $errObj->getError();
                             $system->sleepFive();
@@ -270,7 +276,7 @@ while ($isTrue) {
                           echo "\nDate (format day(number)/month(number)/year(number) || example => 02/09/2010): ";
                           $date = readline();
   
-                          $errObj = $trip->dateToISO($date);
+                          $errObj = $trip->dateToISO($date);   // change variable name errObj
                           if ($errObj->getError()) {
                             echo $errObj->getError();
                             $system->sleepFive();
@@ -308,6 +314,7 @@ while ($isTrue) {
                           $continueResponse = readline();
   
                           if ($continueResponse != 'y') {
+                            $isTrueBookTrip = false;
                             break;
                           }
   
@@ -324,7 +331,8 @@ while ($isTrue) {
                               
                               // make the book
                               if ($eachTrip['Passengers'] < $bus['MaxPassengers']) {
-                                $currentBookingsDB->makeBook($eachTrip['ID'], $_SESSION["Username"]);
+                                $currentBookingsDB->makeBook($eachTrip['ID'],
+                                                        $sessionSecurity->decryptRSA($_SESSION['U']));
                                 
                                 // check if occur any error
                                 echo "\n\nBook done successfully! 😎";
@@ -346,7 +354,7 @@ while ($isTrue) {
 
                     echo "\n\n------------------------Current Bookings------------------------";
 
-                    $returnedBookings = $currentBookingsDB->getBookingByUser($_SESSION['Username']);
+                    $returnedBookings = $currentBookingsDB->getBookingByUser($sessionSecurity->decryptRSA($_SESSION['U']));
 
                     foreach ($returnedBookings as $eachBooking) {
                       echo "\n\nID: " . $eachBooking['ID'];
@@ -356,7 +364,7 @@ while ($isTrue) {
 
                     echo "\n\n------------------------Past Bookings------------------------";
 
-                    $returnedBookings = $pastBookingsDB->getBookingByUser($_SESSION['Username']);
+                    $returnedBookings = $pastBookingsDB->getBookingByUser($sessionSecurity->decryptRSA($_SESSION['U']));
 
                     foreach ($returnedBookings as $eachBooking) {
                       echo "\n\nID: " . $eachBooking['ID'];

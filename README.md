@@ -35,6 +35,7 @@ php Main.php
 - [PostgreSQL](https://www.postgresql.org/docs/13/index.html)
 - [Medoo](https://medoo.in/doc)
 - [PHP dotenv](https://github.com/vlucas/phpdotenv)
+- [phpseclib](https://phpseclib.com/docs/why)
 
 
 # License
