@@ -34,7 +34,7 @@ while ($isTrue) {
     case 'ex':   // exit
       $isTrue = false;
       echo "\nWe hope that you enjoy! 😎\n";
-      $system->clearFiveWaiting();
+      $system->clearThreeWaiting();
       break;
 
     case '1':   // create account
@@ -70,7 +70,7 @@ while ($isTrue) {
                 if ($errorDB) {
                   echo "\nError ocurred\n";
                   echo $errorDB;
-                  $system->sleepFive();
+                  $system->sleepThree();
                   break;
                 }
                 
@@ -80,18 +80,18 @@ while ($isTrue) {
       
               } catch (PDOException $e) {
                 echo $e->getMessage();
-                $system->sleepFive();
+                $system->sleepThree();
               }
       
             } else{
               echo "\nPassword and Confirmation Password don't match\n";
-              $system->sleepFive();
+              $system->sleepThree();
             }
             break;
             
           default:
             echo "\nYou choose $optionCreateAccount.\nOption not available at the moment.";
-            $system->sleepFive();
+            $system->sleepThree();
         }
       }
       break;
@@ -126,7 +126,7 @@ while ($isTrue) {
               if (!$auth) {
                 echo "\nError ocurred.";
                 echo "\nPlease try again or create an account.";
-                $system->sleepFive();
+                $system->sleepThree();
                 break;
               }
     
@@ -136,9 +136,11 @@ while ($isTrue) {
               $_SESSION['U'] = $sessionSecurity->encryptRSA($user->getUsername());   // session username encrypted
               $_SESSION['P'] = $sessionSecurity->encryptRSA($user->getPassword());   // session password encrypted
 
+              $system->sleepOne();
+
               $isTrueAccount = true;
               while ($isTrueAccount) {
-                $system->clearFiveWaiting();
+                $system->clearZeroWaiting();
                 
                 echo "\n\n------------------------Options------------------------";
                 echo "\n1 - Account Information";
@@ -156,7 +158,7 @@ while ($isTrue) {
                     echo "\nLogging out...";
                     $isTrueLogin = false;
                     $isTrueAccount = false;
-                    $system->sleepFive();
+                    $system->sleepThree();
                     break;
 
                   case 'ex':  // login -> account -> exit
@@ -168,7 +170,7 @@ while ($isTrue) {
                     $isTrueLogin          = false;
 
                     echo "\nLogging out...";
-                    $system->sleepThree();
+                    $system->sleepOne();
                     echo "\nWe hope that you enjoy! 😎\n";
                     $system->clearThreeWaiting();
                     break;
@@ -200,7 +202,7 @@ while ($isTrue) {
           
                         if (!$auth) {
                           echo "\nError ocurred";
-                          $system->sleepFive();
+                          $system->sleepThree();
                           break;
                         }
 
@@ -218,15 +220,15 @@ while ($isTrue) {
 
                           echo "\nPassword changed successfully";
                           $_SESSION['P'] = $sessionSecurity->encryptRSA($newUser->getPassword());
-                          $system->sleepFive();
+                          $system->sleepThree();
                         } else {
                           echo "\nPasswords inserted don't match";
-                          $system->sleepFive();
+                          $system->sleepThree();
                           break;
                         }
                       } catch (PDOException $e) {
                         echo $e->getMessage();
-                        $system->sleepFive();
+                        $system->sleepThree();
                       }
                     }
                     break;
@@ -259,7 +261,7 @@ while ($isTrue) {
                           $errObj = $trip->standardString($from);   // change variable name errObj
                           if ($errObj->getError()) {
                             echo $errObj->getError();
-                            $system->sleepFive();
+                            $system->sleepThree();
                             break;
                           }
                           $trip->setFrom($errObj->getLocation());
@@ -270,7 +272,7 @@ while ($isTrue) {
                           $errObj = $trip->standardString($to);   // change variable name errObj
                           if ($errObj->getError()) {
                             echo $errObj->getError();
-                            $system->sleepFive();
+                            $system->sleepThree();
                             break;
                           }
                           $trip->setTo($errObj->getLocation());
@@ -281,7 +283,7 @@ while ($isTrue) {
                           $errObj = $trip->dateToISO($date);   // change variable name errObj
                           if ($errObj->getError()) {
                             echo $errObj->getError();
-                            $system->sleepFive();
+                            $system->sleepThree();
                             break;
                           }
                           $trip->setDate($errObj->getDate());
@@ -338,7 +340,7 @@ while ($isTrue) {
                                 
                                 // check if occur any error
                                 echo "\n\nBook done successfully! 😎";
-                                $system->sleepFive();
+                                $system->sleepThree();
                               }
                             }
                           }
@@ -346,7 +348,7 @@ while ($isTrue) {
   
                         default:
                           echo "You choose $optionTrip.\nOption not available at the moment.";
-                          $system->sleepFive();
+                          $system->sleepThree();
                       }
                     }
                     break;
@@ -382,25 +384,25 @@ while ($isTrue) {
 
                   default:
                     echo "You choose $optionAccount.\nOption not available at the moment.";
-                    $system->sleepFive();
+                    $system->sleepThree();
                 }
               }
             } catch (PDOException $e) {
               echo $e->getMessage();
-              $system->sleepFive();
+              $system->sleepThree();
             }
             break;
   
           default:
             echo "You choose $optionCreateAccount.\nOption not available at the moment.";
-            $system->sleepFive();
+            $system->sleepThree();
         }
       }
       break;
 
     default:
       echo "You choose $option.\nOption not available at the moment.";
-      $system->sleepFive();
+      $system->sleepThree();
   }
 }
 
