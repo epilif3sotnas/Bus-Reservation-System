@@ -57,9 +57,11 @@ while ($isTrue) {
 
             echo "\nCreation of an account\n";
             $username = readline('Insert your username: ');
-            $password = readline('Insert your password: ');                 // improvement -> hide input
+            echo 'Insert your password: ';
+            $password = Seld\CliPrompt\CliPrompt::hiddenPrompt();
             // improvement -> password quality
-            $passwordConfirmation = readline('Confirm your password: ');    // improvement -> hide input
+            echo 'Confirm your password: ';
+            $passwordConfirmation = Seld\CliPrompt\CliPrompt::hiddenPrompt();
             
             if ($password == $passwordConfirmation) {
               try {
@@ -116,7 +118,8 @@ while ($isTrue) {
 
             echo "\nLogin\n";
             $username = readline('Insert your username: ');
-            $password = readline('Insert your password: ');   // improvement -> hide input
+            echo 'Insert your password: ';
+            $password = Seld\CliPrompt\CliPrompt::hiddenPrompt();
   
             try {
               $user = new User($username, $password);
@@ -193,8 +196,8 @@ while ($isTrue) {
 
                     $optionAccountInfo = readline();
                     if ($optionAccountInfo == '1') {
-                      echo "\n\nInsert your password: ";
-                      $password = readline();
+                      echo 'Insert your password: ';
+                      $password = Seld\CliPrompt\CliPrompt::hiddenPrompt();
 
                       try {
                         $auth = $usersDB->authenticationUser($sessionSecurity->decryptRSA($_SESSION['U']),
@@ -206,11 +209,11 @@ while ($isTrue) {
                           break;
                         }
 
-                        echo "\n\nInsert new password: ";
-                        $newPassword = readline();
+                        echo 'Insert new password: ';
+                        $newPassword = Seld\CliPrompt\CliPrompt::hiddenPrompt();
 
-                        echo "\nConfirm new password: ";
-                        $newPasswordConfirmation = readline();
+                        echo 'Confirm new password: ';
+                        $newPasswordConfirmation = Seld\CliPrompt\CliPrompt::hiddenPrompt();
 
                         if ($newPassword == $newPasswordConfirmation) {
                           $newUser = new User($sessionSecurity->decryptRSA($_SESSION['U']), $newPassword);

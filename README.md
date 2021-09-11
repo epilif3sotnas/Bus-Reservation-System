@@ -36,6 +36,7 @@ php Main.php
 - [Medoo](https://medoo.in/doc)
 - [PHP dotenv](https://github.com/vlucas/phpdotenv)
 - [phpseclib](https://phpseclib.com/docs/why)
+- [cli-prompt](https://github.com/Seldaek/cli-prompt)
 
 
 # License
