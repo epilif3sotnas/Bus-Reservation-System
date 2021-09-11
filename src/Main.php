@@ -57,9 +57,26 @@ while ($isTrue) {
 
             echo "\nCreation of an account\n";
             $username = readline('Insert your username: ');
+
+            echo "\nRequirements of password: ";
+            echo "\n- Minimum 8 characters in length";
+            echo "\n- Contains 3 of 4 of the following items:";
+            echo "\n  - Uppercase Letters";
+            echo "\n  - Lowercase Letters";
+            echo "\n  - Numbers";
+            echo "\n  - Symbols\n\n";
+
             echo 'Insert your password: ';
             $password = Seld\CliPrompt\CliPrompt::hiddenPrompt();
-            // improvement -> password quality
+            
+            if (!isStrongPassword($password)) {
+              echo "\nPassword don't match the requirements 😞";
+              $system->sleepThree();
+              break;
+            }
+
+            echo "\nStrong Password 💪\n\n";
+
             echo 'Confirm your password: ';
             $passwordConfirmation = Seld\CliPrompt\CliPrompt::hiddenPrompt();
             
@@ -209,8 +226,24 @@ while ($isTrue) {
                           break;
                         }
 
+                        echo "\nRequirements of password: ";
+                        echo "\n- Minimum 8 characters in length";
+                        echo "\n- Contains 3 of 4 of the following items:";
+                        echo "\n  - Uppercase Letters";
+                        echo "\n  - Lowercase Letters";
+                        echo "\n  - Numbers";
+                        echo "\n  - Symbols\n\n";
+
                         echo 'Insert new password: ';
                         $newPassword = Seld\CliPrompt\CliPrompt::hiddenPrompt();
+
+                        if (!isStrongPassword($newPassword)) {
+                          echo "\nPassword don't match the requirements 😞";
+                          $system->sleepThree();
+                          break;
+                        }
+            
+                        echo "\nStrong Password 💪\n\n";
 
                         echo 'Confirm new password: ';
                         $newPasswordConfirmation = Seld\CliPrompt\CliPrompt::hiddenPrompt();
@@ -407,6 +440,36 @@ while ($isTrue) {
       echo "You choose $option.\nOption not available at the moment.";
       $system->sleepThree();
   }
+}
+
+function isStrongPassword ($password) {
+  if (strlen($password) < 8) {
+    return false;
+  }
+
+  $countRequirements = 0;
+
+  // check lowercase characters
+  if (mb_strtoupper($password, "UTF-8") != $password) {
+    $countRequirements++;
+  }
+
+  // check uppercase characters
+  if (mb_strtolower($password, "UTF-8") != $password) {
+    $countRequirements++;
+  }
+
+  // check numbers characters
+  if (preg_match('~[0-9]+~', $password)) {
+    $countRequirements++;
+  }
+
+  // check symbols characters
+  if (!ctype_alnum($password)) {
+    $countRequirements++;
+  }
+
+  return $countRequirements >= 3 ? true : false;    // verify line
 }
 
 ?>
