@@ -16,7 +16,6 @@ $database = new Medoo\Medoo([
 ]);
 
 class UsersDB {
-    
     public function insertUser ($username, $password) {
         GLOBAL $database;
         $database->insert('Users', [
@@ -60,6 +59,13 @@ class UsersDB {
         [
             'Username' => $username
         ]);
+    }
+
+    public function isAvailableUsername ($username) {
+        global $database;
+        return $database->count('Users', [
+            'Username' => $username,
+        ]) >= 1 ? false : true;
     }
 
     private function verifyPassword ($password, $sessionSecurity) {

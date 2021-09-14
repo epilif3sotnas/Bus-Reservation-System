@@ -5,8 +5,6 @@ class ClearCLI {
     private const ONE_SECOND = 1;
     private const THREE_SECONDS = 3;
 
-    public function __construct () {}
-
     public function clearZeroWaiting () {
         system('clear');
     }

@@ -8,8 +8,6 @@ use phpseclib3\Crypt\Random;
 $cypher = getCypherRSA();
 
 class SessionSecurity {
-    public function __construct () {}
-
     public function encryptRSA ($text) {
         global $cypher;
         return $cypher->encrypt($text);

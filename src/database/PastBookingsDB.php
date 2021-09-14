@@ -16,7 +16,6 @@ $database = new Medoo\Medoo([
 ]);
 
 class PastBookingsDB {
-
     public function getBookingByUser ($username) {
         GLOBAL $database;
         return $database->select('PastBooking', [

@@ -55,8 +55,14 @@ while ($isTrue) {
           case '1':   // create account -> create account
             $system->clearZeroWaiting();
 
+            $user = new User();
+
             echo "\nCreation of an account\n";
             $username = readline('Insert your username: ');
+            if (!$user->setUsername($username)) {
+              $system->sleepThree();
+              break;
+            }
 
             echo "\nRequirements of password: ";
             echo "\n- Minimum 8 characters in length";
@@ -68,22 +74,17 @@ while ($isTrue) {
 
             echo 'Insert your password: ';
             $password = Seld\CliPrompt\CliPrompt::hiddenPrompt();
-            
-            if (!isStrongPassword($password)) {
-              echo "\nPassword don't match the requirements 😞";
+
+            if (!$user->setPassword($password)) {
               $system->sleepThree();
               break;
             }
-
-            echo "\nStrong Password 💪\n\n";
 
             echo 'Confirm your password: ';
             $passwordConfirmation = Seld\CliPrompt\CliPrompt::hiddenPrompt();
             
             if ($password == $passwordConfirmation) {
               try {
-                $user = new User($username, $password);
-      
                 $errorDB = $usersDB->insertUser($user->getUsername(), $user->generateHashPassword()); // insert to db
       
                 if ($errorDB) {
@@ -139,9 +140,7 @@ while ($isTrue) {
             $password = Seld\CliPrompt\CliPrompt::hiddenPrompt();
   
             try {
-              $user = new User($username, $password);
-    
-              $auth = $usersDB->authenticationUser($user->getUsername(), $user->getPassword());   // authenticate user
+              $auth = $usersDB->authenticationUser($username, $password);   // authenticate user
   
               if (!$auth) {
                 echo "\nError ocurred.";
@@ -153,8 +152,8 @@ while ($isTrue) {
               $isTrueLogin = false;
               echo "\nLogged in...";
 
-              $_SESSION['U'] = $sessionSecurity->encryptRSA($user->getUsername());   // session username encrypted
-              $_SESSION['P'] = $sessionSecurity->encryptRSA($user->getPassword());   // session password encrypted
+              $_SESSION['U'] = $sessionSecurity->encryptRSA($username);   // session username encrypted
+              $_SESSION['P'] = $sessionSecurity->encryptRSA($password);   // session password encrypted
 
               $system->sleepOne();
 
@@ -234,22 +233,21 @@ while ($isTrue) {
                         echo "\n  - Numbers";
                         echo "\n  - Symbols\n\n";
 
+                        $newUser = new User();
+
                         echo 'Insert new password: ';
                         $newPassword = Seld\CliPrompt\CliPrompt::hiddenPrompt();
 
-                        if (!isStrongPassword($newPassword)) {
-                          echo "\nPassword don't match the requirements 😞";
+                        if (!$newUser->setPassword($password)) {
                           $system->sleepThree();
                           break;
                         }
-            
-                        echo "\nStrong Password 💪\n\n";
 
                         echo 'Confirm new password: ';
                         $newPasswordConfirmation = Seld\CliPrompt\CliPrompt::hiddenPrompt();
 
                         if ($newPassword == $newPasswordConfirmation) {
-                          $newUser = new User($sessionSecurity->decryptRSA($_SESSION['U']), $newPassword);
+                          $newUser->setUsername($sessionSecurity->decryptRSA($_SESSION['U']));
                           $usersDB->changePassword($newUser->getUsername(), $newUser->generateHashPassword());
 
                           // check if occur any error
@@ -289,43 +287,33 @@ while ($isTrue) {
 
                           echo "\n\n------------------------Choose your trip------------------------";
                           
-                          $trip = new Trip('', '', '');
+                          $trip = new Trip();
   
                           echo "\nFrom: ";
                           $from = readline();
   
-                          $errObj = $trip->standardString($from);   // change variable name errObj
-                          if ($errObj->getError()) {
-                            echo $errObj->getError();
+                          if (!$trip->setFrom($from)) {
                             $system->sleepThree();
                             break;
                           }
-                          $trip->setFrom($errObj->getLocation());
   
                           echo "\nTo: ";
                           $to = readline();
   
-                          $errObj = $trip->standardString($to);   // change variable name errObj
-                          if ($errObj->getError()) {
-                            echo $errObj->getError();
+                          if (!$trip->setTo($to)) {
                             $system->sleepThree();
                             break;
                           }
-                          $trip->setTo($errObj->getLocation());
   
                           echo "\nDate (format day(number)/month(number)/year(number) || example => 02/09/2010): ";
                           $date = readline();
   
-                          $errObj = $trip->dateToISO($date);   // change variable name errObj
-                          if ($errObj->getError()) {
-                            echo $errObj->getError();
+                          if (!$trip->setDate($date)) {
                             $system->sleepThree();
                             break;
                           }
-                          $trip->setDate($errObj->getDate());
   
                           // get trips available
-  
                           $tripsReturned = $tripsDB->getTrips($trip);
 
                           // check if occur any error
@@ -440,36 +428,6 @@ while ($isTrue) {
       echo "You choose $option.\nOption not available at the moment.";
       $system->sleepThree();
   }
-}
-
-function isStrongPassword ($password) {
-  if (strlen($password) < 8) {
-    return false;
-  }
-
-  $countRequirements = 0;
-
-  // check lowercase characters
-  if (mb_strtoupper($password, "UTF-8") != $password) {
-    $countRequirements++;
-  }
-
-  // check uppercase characters
-  if (mb_strtolower($password, "UTF-8") != $password) {
-    $countRequirements++;
-  }
-
-  // check numbers characters
-  if (preg_match('~[0-9]+~', $password)) {
-    $countRequirements++;
-  }
-
-  // check symbols characters
-  if (!ctype_alnum($password)) {
-    $countRequirements++;
-  }
-
-  return $countRequirements >= 3 ? true : false;    // verify line
 }
 
 ?>

@@ -16,7 +16,6 @@ $database = new Medoo\Medoo([
 ]);
 
 class TripsDB {
-
     public function getTrips ($trip) {
         GLOBAL $database;
         return $database->select("Trips", [
