@@ -35,7 +35,7 @@ class CurrentBookingsDB {
 
     public function getBookingByUser ($username) {
         GLOBAL $database;
-        $bookings = $database->select('CurrentBooking', [
+        $bookings = $database->select('CurrentBookings', [
             'ID',
             'Trip',
             'Passenger',
