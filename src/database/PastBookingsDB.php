@@ -18,7 +18,7 @@ $database = new Medoo\Medoo([
 class PastBookingsDB {
     public function getBookingByUser ($username) {
         GLOBAL $database;
-        return $database->select('PastBooking', [
+        $bookings = $database->select('PastBooking', [
             'ID',
             'Trip',
             'Passenger',
@@ -27,6 +27,12 @@ class PastBookingsDB {
         ], [
             'Passenger' => $username,
         ]);
+
+        if (!$database->error) {
+            return (object) ['pastBookings' => $bookings, 'isGetPastBookings' => true];
+        }
+        echo "\nOccurred an error 😞\n";
+        return (object) ['pastBookings' => null, 'isGetPastBookings' => false];
     }
 }
 

@@ -17,41 +17,70 @@ $database = new Medoo\Medoo([
 
 class UsersDB {
     public function insertUser ($username, $password) {
-        GLOBAL $database;
+        global $database;
         $database->insert('Users', [
             'Username' => $username,
             'Password' => $password,
             'DateAccountCreation' => date('c'),
             'DatePasswordModification' => date('c'),
         ]);
-        return $database->error;    // return errors messages
+
+        if (!$database->error) {
+            echo "\nAccount created successfully 😎\n";
+            return true;
+        }
+        echo "\nError ocurred 😞, account wasn't created\n";
+        echo $database->error;
+        return false;
     }
 
     public function authenticationUser ($username, $password, $sessionSecurity = null) {
         if (isset($_SESSION['P'])) {
-            return $this->verifyPassword($password, $sessionSecurity);
+            if ($password == $sessionSecurity->decryptRSA($_SESSION['P'])) {
+                return true;
+            }
+            echo "\nAuthentication failed\n";
+            return false;
         }
 
-        GLOBAL $database;
+        global $database;
         $passwordFromDB = $database->get("Users", "Password", [
             "Username" => $username,
         ]);
-        return password_verify($password, $passwordFromDB);
+
+        if ($database->error) {
+            echo "\nError ocurred 😞\n";
+            echo $database->error;
+            return false;
+        }
+
+        if (password_verify($password, $passwordFromDB)) {
+            echo "\nLogged in...";
+            return true;
+        }
+        echo "\nAuthentication failed\n";
+        return false;
     }
 
     public function getInformationUser ($username) {
-        GLOBAL $database;
-        return $database->get("Users", [
+        global $database;
+        $userInfo = $database->get("Users", [
             "DateAccountCreation",
             "DatePasswordModification",
         ],
         [
             "Username" => $username,
         ]);
+
+        if (!$database->error) {
+            return (object) ['info' => $userInfo, 'isGetInfo' => true];
+        }
+        echo "\nOccurred an error 😞\n";
+        return (object) ['info' => null, 'isGetInfo' => false];
     }
 
     public function changePassword ($username, $password) {
-        GLOBAL $database;
+        global $database;
         $database->update('Users', [
             'Password' => $password,
             'DatePasswordModification' => date('c'),
@@ -59,19 +88,30 @@ class UsersDB {
         [
             'Username' => $username
         ]);
+
+        if (!$database->error) {
+            echo "\nPassword changed successfully\n";
+            return true;
+        }
+        echo "\nOccurred an error 😞\nPassword wasn't changed\n";
+        echo $database->error;
+        return false;
     }
 
     public function isAvailableUsername ($username) {
         global $database;
-        return $database->count('Users', [
+        $countUsers = $database->count('Users', [
             'Username' => $username,
-        ]) >= 1 ? false : true;
-    }
+        ]);
 
-    private function verifyPassword ($password, $sessionSecurity) {
-        if ($password == $sessionSecurity->decryptRSA($_SESSION['P'])) {
+        if (!$database->error && $countUsers == 0) {
             return true;
         }
+        if ($countUsers >= 1) {
+            echo "\nUsername not available\n";
+            return false;
+        }
+        echo "\nOccurred an error 😞\n";
         return false;
     }
 }

@@ -18,7 +18,7 @@ $database = new Medoo\Medoo([
 class TripsDB {
     public function getTrips ($trip) {
         GLOBAL $database;
-        return $database->select("Trips", [
+        $trips = $database->select("Trips", [
             "ID",
             "From",
             'To',
@@ -33,11 +33,17 @@ class TripsDB {
             "To"    => $trip->getTo(),
             "Date"  => $trip->getDate(),
         ]);
+
+        if (!$database->error) {
+            return (object) ['trips' => $trips, 'isGetTrips' => true];
+        }
+        echo "\nOccurred an error 😞\n";
+        return (object) ['trips' => null, 'isGetTrips' => false];
     }
 
     public function getDriver ($ID) {
         GLOBAL $database;
-        return $database->get('Drivers', [
+        $driver = $database->get('Drivers', [
             'Name',
             'BirthDate',
             'LicenseDate',
@@ -46,11 +52,17 @@ class TripsDB {
         ], [
             'ID' => $ID,
         ]);
+
+        if (!$database->error) {
+            return (object) ['driver' => $driver, 'isGetDriver' => true];
+        }
+        echo "\nOccurred an error 😞\n";
+        return (object) ['driver' => null, 'isGetDriver' => false];
     }
 
     public function getBus ($ID) {
         GLOBAL $database;
-        return $database->get('Drivers', [
+        $bus = $database->get('Buses', [
             "Name",
             "EngineName",
             "EngineCapacity",
@@ -64,6 +76,12 @@ class TripsDB {
         ], [
             'ID' => $ID,
         ]);
+
+        if (!$database->error) {
+            return (object) ['bus' => $bus, 'isGetBus' => true];
+        }
+        echo "\nOccurred an error 😞\n";
+        return (object) ['bus' => null, 'isGetBus' => false];
     }
 }
 

@@ -19,16 +19,23 @@ class CurrentBookingsDB {
 
     public function makeBook ($Trip, $username) {
         GLOBAL $database;
-        return $database->insert('CurrentBookings', [
+        $database->insert('CurrentBookings', [
             'Trip'  => $Trip,
             'Passenger' => $username,
             'DateTimeBooking' => date('c'),
         ]);
+
+        if (!$database->error) {
+            echo "\nBook made successfully 😎\n";
+            return true;
+        }
+        echo "\nError ocurred 😞, book wasn't made\n";
+        return false;
     }
 
     public function getBookingByUser ($username) {
         GLOBAL $database;
-        return $database->select('CurrentBooking', [
+        $bookings = $database->select('CurrentBooking', [
             'ID',
             'Trip',
             'Passenger',
@@ -36,6 +43,12 @@ class CurrentBookingsDB {
         ], [
             'Passenger' => $username,
         ]);
+
+        if (!$database->error) {
+            return (object) ['currentBookings' => $bookings, 'isGetCurrentBookings' => true];
+        }
+        echo "\nOccurred an error 😞\n";
+        return (object) ['currentBookings' => null, 'isGetCurrentBookings' => false];
     }
 }
 

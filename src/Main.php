@@ -2,7 +2,7 @@
 
 include 'class/User.php';
 include 'class/Trip.php';
-include 'class/SessionSecuirty.php';
+include 'class/SessionSecurity.php';
 
 include 'database/UsersDB.php';
 include 'database/TripsDB.php';
@@ -85,19 +85,13 @@ while ($isTrue) {
             
             if ($password == $passwordConfirmation) {
               try {
-                $errorDB = $usersDB->insertUser($user->getUsername(), $user->generateHashPassword()); // insert to db
-      
-                if ($errorDB) {
-                  echo "\nError ocurred\n";
-                  echo $errorDB;
+                if (!$usersDB->insertUser($user->getUsername(), $user->generateHashPassword())) {     // insert to db
                   $system->sleepThree();
                   break;
                 }
-                
                 $isTrueCreateAccount = false;
-                echo "Account created successfully 😎";
                 $system->sleepThree();
-      
+
               } catch (PDOException $e) {
                 echo $e->getMessage();
                 $system->sleepThree();
@@ -140,17 +134,11 @@ while ($isTrue) {
             $password = Seld\CliPrompt\CliPrompt::hiddenPrompt();
   
             try {
-              $auth = $usersDB->authenticationUser($username, $password);   // authenticate user
-  
-              if (!$auth) {
-                echo "\nError ocurred.";
-                echo "\nPlease try again or create an account.";
+              if (!$usersDB->authenticationUser($username, $password)) {      // authenticate user
                 $system->sleepThree();
                 break;
               }
-    
               $isTrueLogin = false;
-              echo "\nLogged in...";
 
               $_SESSION['U'] = $sessionSecurity->encryptRSA($username);   // session username encrypted
               $_SESSION['P'] = $sessionSecurity->encryptRSA($password);   // session password encrypted
@@ -201,10 +189,15 @@ while ($isTrue) {
 
                     $userInfo = $usersDB->getInformationUser($sessionSecurity->decryptRSA($_SESSION['U']));
 
+                    if (!$userInfo->isGetInfo) {
+                      $system->sleepThree();
+                      break;
+                    }
+
                     echo "\n\nUsername: " . $sessionSecurity->decryptRSA($_SESSION['U']);
                     echo "\nPassword: " . str_repeat('*', strlen($sessionSecurity->decryptRSA($_SESSION['P'])) + 3);
-                    echo "\nDate of creation: " . $userInfo['DateAccountCreation'];
-                    echo "\nDate of last password modification: " . $userInfo['DatePasswordModification'];
+                    echo "\nDate of creation: " . $userInfo->info['DateAccountCreation'];
+                    echo "\nDate of last password modification: " . $userInfo->info['DatePasswordModification'];
 
                     echo "\n\n------------------------Options------------------------";
                     echo "\n1 - Change password\n";
@@ -216,11 +209,8 @@ while ($isTrue) {
                       $password = Seld\CliPrompt\CliPrompt::hiddenPrompt();
 
                       try {
-                        $auth = $usersDB->authenticationUser($sessionSecurity->decryptRSA($_SESSION['U']),
-                                        $password, $sessionSecurity);   // authenticate user
-          
-                        if (!$auth) {
-                          echo "\nError ocurred";
+                        if (!$usersDB->authenticationUser($sessionSecurity->decryptRSA($_SESSION['U']),
+                                            $password, $sessionSecurity)) {     // authenticate user
                           $system->sleepThree();
                           break;
                         }
@@ -248,9 +238,11 @@ while ($isTrue) {
 
                         if ($newPassword == $newPasswordConfirmation) {
                           $newUser->setUsername($sessionSecurity->decryptRSA($_SESSION['U']));
-                          $usersDB->changePassword($newUser->getUsername(), $newUser->generateHashPassword());
-
-                          // check if occur any error
+                          
+                          if (!$usersDB->changePassword($newUser->getUsername(), $newUser->generateHashPassword())) {
+                            $system->sleepThree();
+                            break;
+                          }
 
                           echo "\nPassword changed successfully";
                           $_SESSION['P'] = $sessionSecurity->encryptRSA($newUser->getPassword());
@@ -315,23 +307,29 @@ while ($isTrue) {
   
                           // get trips available
                           $tripsReturned = $tripsDB->getTrips($trip);
-
-                          // check if occur any error
+                          if (!$tripsReturned->isGetTrips) {
+                            $system->sleepThree();
+                            break;
+                          }
 
                           $system->clearThreeWaiting();
   
                           echo "\nTrips available\n";
-                          foreach ($tripsReturned as $eachTrip) {
+                          foreach ($tripsReturned->trips as $eachTrip) {
 
-                            $driver = $tripsDB->getDriver($eachTrip['Driver']);
-                            $bus = $tripsDB->getBus($eachTrip['Bus']);
-                            // check if occur any error
+                            $driverReturned = $tripsDB->getDriver($eachTrip['Driver']);
+                            $busReturned = $tripsDB->getBus($eachTrip['Bus']);
                             
                             echo "\n\nID: " . $eachTrip['ID'];
                             echo "\nFrom: " . $eachTrip['From'];
                             echo "\nTo: " . $eachTrip['To'];
-                            echo "\nBus: " . $bus['Name'];
-                            echo "\nDriver: " . $driver['Name'];
+
+                            if ($busReturned->isGetBus) {
+                              echo "\nBus: " . $busReturned->bus['Name'];
+                            }
+                            if ($driverReturned->isGetDriver) {
+                              echo "\nDriver: " . $driverReturned->driver['Name'];
+                            }
                             echo "\nPassengers: " . $eachTrip['Passengers'];
                             echo "\nDate: " . $eachTrip['Date'];
                             echo "\nTime: " . $eachTrip['Time'];
@@ -352,20 +350,28 @@ while ($isTrue) {
                           echo "\nInsert the trip ID that you want to book: ";
                           $bookID = readline();
   
-                          foreach ($tripsReturned as $eachTrip) {
+                          foreach ($tripsReturned->trips as $eachTrip) {
                             if ($bookID == $eachTrip['ID']) {
 
-                              $bus = $tripsDB->getBus($eachTrip['Bus']);
+                              $busReturned = $tripsDB->getBus($eachTrip['Bus']);
+                              if (!$busReturned->isGetBus) {
+                                $system->sleepThree();
+                                break;
+                              }
                               
                               // make the book
-                              if ($eachTrip['Passengers'] < $bus['MaxPassengers']) {
-                                $currentBookingsDB->makeBook($eachTrip['ID'],
-                                                        $sessionSecurity->decryptRSA($_SESSION['U']));
-                                
-                                // check if occur any error
-                                echo "\n\nBook done successfully! 😎";
+                              if ($eachTrip['Passengers'] < $busReturned->bus['MaxPassengers']) {
+                                if (!$currentBookingsDB->makeBook($eachTrip['ID'], $sessionSecurity->decryptRSA($_SESSION['U']))) {
+                                  $system->sleepThree();
+                                  break;
+                                }
+
                                 $system->sleepThree();
+                                break;
                               }
+                              echo "\nBus is already full, you can't order this trip\n";
+                              $system->sleepThree();
+                              break;
                             }
                           }
                           break;
@@ -382,9 +388,13 @@ while ($isTrue) {
 
                     echo "\n\n------------------------Current Bookings------------------------";
 
-                    $returnedBookings = $currentBookingsDB->getBookingByUser($sessionSecurity->decryptRSA($_SESSION['U']));
+                    $returnedCurrentBookings = $currentBookingsDB->getBookingByUser($sessionSecurity->decryptRSA($_SESSION['U']));
+                    if (!$returnedCurrentBookings->isGetCurrentBookings) {
+                      $system->sleepThree();
+                      break;
+                    }
 
-                    foreach ($returnedBookings as $eachBooking) {
+                    foreach ($returnedCurrentBookings->currentBookings as $eachBooking) {
                       echo "\n\nID: " . $eachBooking['ID'];
                       echo "\nTrip: " . $eachBooking['Trip'];
                       echo "\nDateTimeBooking: " . $eachBooking['DateTimeBooking'];
@@ -392,9 +402,13 @@ while ($isTrue) {
 
                     echo "\n\n------------------------Past Bookings------------------------";
 
-                    $returnedBookings = $pastBookingsDB->getBookingByUser($sessionSecurity->decryptRSA($_SESSION['U']));
+                    $returnedPastBookings = $pastBookingsDB->getBookingByUser($sessionSecurity->decryptRSA($_SESSION['U']));
+                    if (!$returnedPastBookings->isGetPastBookings) {
+                      $system->sleepThree();
+                      break;
+                    }
 
-                    foreach ($returnedBookings as $eachBooking) {
+                    foreach ($returnedPastBookings->pastBookings as $eachBooking) {
                       echo "\n\nID: " . $eachBooking['ID'];
                       echo "\nTrip: " . $eachBooking['Trip'];
                       echo "\nDateTimeBooking: " . $eachBooking['DateTimeBooking'];

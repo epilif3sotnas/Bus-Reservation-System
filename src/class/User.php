@@ -18,7 +18,6 @@ class User {
         $this->username = $username;
         return true;
       }
-      echo "\nUsername not available 😞";
       $this->username = null;
       $this->password = null;
       return false;
