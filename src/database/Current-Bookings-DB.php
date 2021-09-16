@@ -1,9 +1,5 @@
 <?php
 
-require '../vendor/autoload.php';
-
-include 'Trips-DB.php';
-
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 

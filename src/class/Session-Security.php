@@ -1,7 +1,5 @@
 <?php
 
-require '../vendor/autoload.php';
-
 use phpseclib3\Crypt\AES;
 use phpseclib3\Crypt\Random;
 

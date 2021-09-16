@@ -1,5 +1,7 @@
 <?php
 
+require '../vendor/autoload.php';
+
 include 'class/User.php';
 include 'class/Trip.php';
 include 'class/Session-Security.php';
@@ -8,6 +10,9 @@ include 'database/Users-DB.php';
 include 'database/Trips-DB.php';
 include 'database/Current-Bookings-DB.php';
 include 'database/Past-Bookings-DB.php';
+
+include 'error/Trip-Location-Err.php';
+include 'error/Trip-Date-Err.php';
 
 include 'system/Clear-CLI.php';
 

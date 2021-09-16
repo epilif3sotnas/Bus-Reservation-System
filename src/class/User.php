@@ -1,7 +1,5 @@
 <?php
 
-include '../database/Users-DB.php';
-
 class User {
     private $username;
     private $password;
