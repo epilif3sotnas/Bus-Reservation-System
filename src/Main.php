@@ -243,7 +243,6 @@ while ($isTrue) {
                             break;
                           }
 
-                          echo "\nPassword changed successfully";
                           $_SESSION['P'] = $sessionSecurity->encryptRSA($newUser->getPassword());
                           $system->sleepThree();
                         } else {
@@ -359,7 +358,6 @@ while ($isTrue) {
                                 break;
                               }
                               $system->sleepThree();
-                              break;
                             }
                           }
                           break;
