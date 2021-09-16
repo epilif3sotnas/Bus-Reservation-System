@@ -34,6 +34,10 @@ class TripsDB {
             "Date"  => $trip->getDate(),
         ]);
 
+        if (!$trips) {
+            echo "\nOccurred an error 😞\n";
+            return (object) ['trips' => null, 'isGetTrips' => false];
+        }
         if (!$database->error) {
             return (object) ['trips' => $trips, 'isGetTrips' => true];
         }
@@ -53,6 +57,9 @@ class TripsDB {
             'ID' => $ID,
         ]);
 
+        if (!$driver) {
+            return (object) ['driver' => null, 'isGetDriver' => false];
+        }
         if (!$database->error) {
             return (object) ['driver' => $driver, 'isGetDriver' => true];
         }
@@ -77,6 +84,9 @@ class TripsDB {
             'ID' => $ID,
         ]);
 
+        if (!$bus) {
+            return (object) ['bus' => null, 'isGetBus' => false];
+        }
         if (!$database->error) {
             return (object) ['bus' => $bus, 'isGetBus' => true];
         }

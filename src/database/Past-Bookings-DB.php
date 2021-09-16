@@ -28,6 +28,10 @@ class PastBookingsDB {
             'Passenger' => $username,
         ]);
 
+        if (!$bookings) {
+            echo "\nOccurred an error 😞\n";
+            return (object) ['pastBookings' => null, 'isGetPastBookings' => false];
+        }
         if (!$database->error) {
             return (object) ['pastBookings' => $bookings, 'isGetPastBookings' => true];
         }

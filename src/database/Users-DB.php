@@ -72,6 +72,10 @@ class UsersDB {
             "Username" => $username,
         ]);
 
+        if (!$userInfo) {
+            echo "\nOccurred an error 😞\n";
+            return (object) ['info' => null, 'isGetInfo' => false];
+        }
         if (!$database->error) {
             return (object) ['info' => $userInfo, 'isGetInfo' => true];
         }

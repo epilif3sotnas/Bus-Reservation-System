@@ -6,7 +6,7 @@ include 'class/Session-Security.php';
 
 include 'database/Users-DB.php';
 include 'database/Trips-DB.php';
-include 'database/CurrentBookings-DB.php';
+include 'database/Current-Bookings-DB.php';
 include 'database/Past-Bookings-DB.php';
 
 include 'system/Clear-CLI.php';
@@ -325,9 +325,13 @@ while ($isTrue) {
 
                             if ($busReturned->isGetBus) {
                               echo "\nBus: " . $busReturned->bus['Name'];
+                            } else {
+                              echo "\nBus: occurred an error 😞";
                             }
                             if ($driverReturned->isGetDriver) {
                               echo "\nDriver: " . $driverReturned->driver['Name'];
+                            } else {
+                              echo "\nDriver: occurred an error 😞";
                             }
                             echo "\nPassengers: " . $eachTrip['Passengers'];
                             echo "\nDate: " . $eachTrip['Date'];

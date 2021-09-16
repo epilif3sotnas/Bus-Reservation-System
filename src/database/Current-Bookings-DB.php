@@ -44,6 +44,10 @@ class CurrentBookingsDB {
             'Passenger' => $username,
         ]);
 
+        if (!$bookings) {
+            echo "\nOccurred an error 😞\n";
+            return (object) ['currentBookings' => null, 'isGetCurrentBookings' => false];
+        }
         if (!$database->error) {
             return (object) ['currentBookings' => $bookings, 'isGetCurrentBookings' => true];
         }
