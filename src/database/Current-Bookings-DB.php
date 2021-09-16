@@ -38,11 +38,11 @@ class CurrentBookingsDB {
             'DateTimeBooking' => date('c'),
         ]);
 
-        // +1 to passenger trip count
-
         if (!$database->error) {
-            echo "\nBook made successfully 😎\n";
-            return true;
+            if ($tripsDB->addPassenger($trip['ID'])) {
+                echo "\nBook made successfully 😎\n";
+                return true;
+            }
         }
         echo "\nError ocurred 😞, book wasn't made\n";
         return false;

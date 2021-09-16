@@ -93,6 +93,17 @@ class TripsDB {
         echo "\nOccurred an error 😞\n";
         return (object) ['bus' => null, 'isGetBus' => false];
     }
+
+    public function addPassenger ($ID) {
+        global $database;
+        $database->update('Trips',[
+            'Passengers[+]' => 1,
+        ], [
+            'ID' => $ID,
+        ]);
+
+        return $database->error ? false : true;
+    }
 }
 
 ?>
