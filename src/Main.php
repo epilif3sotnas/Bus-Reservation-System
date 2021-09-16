@@ -392,30 +392,28 @@ while ($isTrue) {
 
                     $returnedCurrentBookings = $currentBookingsDB->getBookingByUser($sessionSecurity->decryptRSA($_SESSION['U']));
                     if (!$returnedCurrentBookings->isGetCurrentBookings) {
-                      $system->sleepThree();
-                      break;
-                    }
-
-                    foreach ($returnedCurrentBookings->currentBookings as $eachBooking) {
-                      echo "\n\nID: " . $eachBooking['ID'];
-                      echo "\nTrip: " . $eachBooking['Trip'];
-                      echo "\nDateTimeBooking: " . $eachBooking['DateTimeBooking'];
+                      $system->sleepOne();
+                    } else {
+                      foreach ($returnedCurrentBookings->currentBookings as $eachBooking) {
+                        echo "\n\nID: " . $eachBooking['ID'];
+                        echo "\nTrip: " . $eachBooking['Trip'];
+                        echo "\nDateTimeBooking: " . $eachBooking['DateTimeBooking'];
+                      }
                     }
 
                     echo "\n\n------------------------Past Bookings------------------------";
 
                     $returnedPastBookings = $pastBookingsDB->getBookingByUser($sessionSecurity->decryptRSA($_SESSION['U']));
                     if (!$returnedPastBookings->isGetPastBookings) {
-                      $system->sleepThree();
-                      break;
+                      $system->sleepOne();
+                    } else {
+                      foreach ($returnedPastBookings->pastBookings as $eachBooking) {
+                        echo "\n\nID: " . $eachBooking['ID'];
+                        echo "\nTrip: " . $eachBooking['Trip'];
+                        echo "\nDateTimeBooking: " . $eachBooking['DateTimeBooking'];
+                      }
                     }
-
-                    foreach ($returnedPastBookings->pastBookings as $eachBooking) {
-                      echo "\n\nID: " . $eachBooking['ID'];
-                      echo "\nTrip: " . $eachBooking['Trip'];
-                      echo "\nDateTimeBooking: " . $eachBooking['DateTimeBooking'];
-                    }
-                      
+ 
                     echo "\n\n------------------------Options------------------------";
                     echo "\nClick any button to return\n";
 
