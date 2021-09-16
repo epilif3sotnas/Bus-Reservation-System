@@ -2,6 +2,8 @@
 
 require '../vendor/autoload.php';
 
+include 'Trips-DB.php';
+
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
@@ -17,13 +19,26 @@ $database = new Medoo\Medoo([
 
 class CurrentBookingsDB {
 
-    public function makeBook ($Trip, $username) {
-        GLOBAL $database;
+    public function makeBook ($trip, $username) {
+        $tripsDB = new TripsDB();
+        $busReturned = $tripsDB->getBus($trip['Bus']);
+        if (!$busReturned->isGetBus) {
+            echo "\nError ocurred 😞, book wasn't made\n";
+            return false;
+        }
+        if ($trip['Passengers'] >= $busReturned->bus['MaxPassengers']) {
+            echo "\nBus is already full, you can't book this trip\n";
+            return false;
+        }
+
+        global $database;
         $database->insert('CurrentBookings', [
-            'Trip'  => $Trip,
+            'Trip'  => $trip['ID'],
             'Passenger' => $username,
             'DateTimeBooking' => date('c'),
         ]);
+
+        // +1 to passenger trip count
 
         if (!$database->error) {
             echo "\nBook made successfully 😎\n";
@@ -34,7 +49,7 @@ class CurrentBookingsDB {
     }
 
     public function getBookingByUser ($username) {
-        GLOBAL $database;
+        global $database;
         $bookings = $database->select('CurrentBookings', [
             'ID',
             'Trip',

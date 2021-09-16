@@ -354,24 +354,10 @@ while ($isTrue) {
   
                           foreach ($tripsReturned->trips as $eachTrip) {
                             if ($bookID == $eachTrip['ID']) {
-
-                              $busReturned = $tripsDB->getBus($eachTrip['Bus']);
-                              if (!$busReturned->isGetBus) {
+                              if (!$currentBookingsDB->makeBook($eachTrip, $sessionSecurity->decryptRSA($_SESSION['U']))) {
                                 $system->sleepThree();
                                 break;
                               }
-                              
-                              // make the book
-                              if ($eachTrip['Passengers'] < $busReturned->bus['MaxPassengers']) {
-                                if (!$currentBookingsDB->makeBook($eachTrip['ID'], $sessionSecurity->decryptRSA($_SESSION['U']))) {
-                                  $system->sleepThree();
-                                  break;
-                                }
-
-                                $system->sleepThree();
-                                break;
-                              }
-                              echo "\nBus is already full, you can't order this trip\n";
                               $system->sleepThree();
                               break;
                             }
