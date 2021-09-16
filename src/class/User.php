@@ -1,6 +1,6 @@
 <?php
 
-include '../database/UsersDB.php';
+include '../database/Users-DB.php';
 
 class User {
     private $username;

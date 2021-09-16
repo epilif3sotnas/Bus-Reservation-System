@@ -2,14 +2,14 @@
 
 include 'class/User.php';
 include 'class/Trip.php';
-include 'class/SessionSecurity.php';
+include 'class/Session-Security.php';
 
-include 'database/UsersDB.php';
-include 'database/TripsDB.php';
-include 'database/CurrentBookingsDB.php';
-include 'database/PastBookingsDB.php';
+include 'database/Users-DB.php';
+include 'database/Trips-DB.php';
+include 'database/CurrentBookings-DB.php';
+include 'database/Past-Bookings-DB.php';
 
-include 'system/ClearCLI.php';
+include 'system/Clear-CLI.php';
 
 $sessionSecurity = new SessionSecurity();
 
@@ -188,7 +188,6 @@ while ($isTrue) {
                     echo "\n\n------------------------Account information------------------------";
 
                     $userInfo = $usersDB->getInformationUser($sessionSecurity->decryptRSA($_SESSION['U']));
-
                     if (!$userInfo->isGetInfo) {
                       $system->sleepThree();
                       break;
@@ -297,7 +296,7 @@ while ($isTrue) {
                             break;
                           }
   
-                          echo "\nDate (format day(number)/month(number)/year(number) || example => 02/09/2010): ";
+                          echo "\nDate (format day/month/year || example => 02/09/2010): ";
                           $date = readline();
   
                           if (!$trip->setDate($date)) {
@@ -335,8 +334,8 @@ while ($isTrue) {
                             echo "\nTime: " . $eachTrip['Time'];
                           }
   
-                          echo "\n\nDo you want to book one this trips?";
-                          echo "\nInsert (y) if you want and any other to cancel: ";
+                          echo "\n\nDo you want to book one of this trips?";
+                          echo "\nInsert ----> y <---- if you want and any other to cancel: ";
                           $continueResponse = readline();
   
                           if ($continueResponse != 'y') {
@@ -345,7 +344,6 @@ while ($isTrue) {
                           }
   
                           // book the trip
-  
                           echo "\n\n------------------------Choose your trip------------------------";
                           echo "\nInsert the trip ID that you want to book: ";
                           $bookID = readline();

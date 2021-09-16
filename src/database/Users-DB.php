@@ -108,7 +108,7 @@ class UsersDB {
             return true;
         }
         if ($countUsers >= 1) {
-            echo "\nUsername not available\n";
+            echo "\nUsername not available 😞\n";
             return false;
         }
         echo "\nOccurred an error 😞\n";

@@ -1,7 +1,7 @@
 <?php 
 
-include 'error/TripLocationErr.php';
-include 'error/TripDateErr.php';
+include 'error/Trip-Location-Err.php';
+include 'error/Trip-Date-Err.php';
 
 class Trip {
     private $from;
