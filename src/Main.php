@@ -316,6 +316,8 @@ while ($isTrue) {
 
                             $driverReturned = $tripsDB->getDriver($eachTrip['Driver']);
                             $busReturned = $tripsDB->getBus($eachTrip['Bus']);
+
+                            if ($eachTrip['Passengers'] >= $busReturned->bus['MaxPassengers']) continue;
                             
                             echo "\n\nID: " . $eachTrip['ID'];
                             echo "\nFrom: " . $eachTrip['From'];
