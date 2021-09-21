@@ -34,7 +34,7 @@ while ($isTrue) {
   echo "\n2 - Login";
   echo "\nex - Exit\n";
 
-  $option = readline();
+  $option = trim(readline());
   switch ($option) {
     case 'ex':   // exit
       $isTrue = false;
@@ -51,7 +51,7 @@ while ($isTrue) {
         echo "\n1 - Create account";
         echo "\n0 - Return\n";
   
-        $optionCreateAccount = readline();
+        $optionCreateAccount = trim(readline());
         switch ($optionCreateAccount) {
           case '0':   // create account -> return
             $isTrueCreateAccount = false;
@@ -124,7 +124,7 @@ while ($isTrue) {
         echo "\n1 - Login";
         echo "\n0 - Return\n";
   
-        $optionLogin = readline();
+        $optionLogin = trim(readline());
         switch ($optionLogin) {
           case '0':   // login -> return
             $isTrueLogin = false;
@@ -161,7 +161,7 @@ while ($isTrue) {
                 echo "\n0 - Log out";
                 echo "\nex - Exit\n";
   
-                $optionAccount = readline();
+                $optionAccount = trim(readline());
                 switch ($optionAccount) {
                   case '0':   // login -> account -> log out
                     unset($_SESSION['U']);
@@ -207,7 +207,7 @@ while ($isTrue) {
                     echo "\n1 - Change password\n";
                     echo "\nClick other button to return\n";
 
-                    $optionAccountInfo = readline();
+                    $optionAccountInfo = trim(readline());
                     if ($optionAccountInfo == '1') {
                       echo 'Insert your password: ';
                       $password = Seld\CliPrompt\CliPrompt::hiddenPrompt();
@@ -271,7 +271,7 @@ while ($isTrue) {
                       echo "\n1 - Booking a trip";
                       echo "\n0 - Return\n";
   
-                      $optionTrip = readline();
+                      $optionTrip = trim(readline());
                       switch ($optionTrip) {
                         case '0':   // login -> account -> booking -> return
                           $isTrueBookTrip = false;
@@ -285,7 +285,7 @@ while ($isTrue) {
                           $trip = new Trip();
   
                           echo "\nFrom: ";
-                          $from = readline();
+                          $from = trim(readline());
   
                           if (!$trip->setFrom($from)) {
                             $system->sleepThree();
@@ -293,7 +293,7 @@ while ($isTrue) {
                           }
   
                           echo "\nTo: ";
-                          $to = readline();
+                          $to = trim(readline());
   
                           if (!$trip->setTo($to)) {
                             $system->sleepThree();
@@ -301,7 +301,7 @@ while ($isTrue) {
                           }
   
                           echo "\nDate (format day/month/year || example => 02/09/2010): ";
-                          $date = readline();
+                          $date = trim(readline());
   
                           if (!$trip->setDate($date)) {
                             $system->sleepThree();
@@ -344,7 +344,7 @@ while ($isTrue) {
   
                           echo "\n\nDo you want to book one of this trips?";
                           echo "\nInsert ----> y <---- if you want and any other to cancel: ";
-                          $continueResponse = readline();
+                          $continueResponse = trim(readline());
   
                           if ($continueResponse != 'y') {
                             $isTrueBookTrip = false;
@@ -354,7 +354,7 @@ while ($isTrue) {
                           // book the trip
                           echo "\n\n------------------------Choose your trip------------------------";
                           echo "\nInsert the trip ID that you want to book: ";
-                          $bookID = readline();
+                          $bookID = trim(readline());
   
                           foreach ($tripsReturned->trips as $eachTrip) {
                             if ($bookID == $eachTrip['ID']) {
