@@ -109,7 +109,7 @@ while ($isTrue) {
             break;
             
           default:
-            echo "\nYou choose $optionCreateAccount.\nOption not available at the moment.";
+            echo "\nYou choose ---> $optionCreateAccount <---\nOption not available at the moment\n";
             $system->sleepThree();
         }
       }
@@ -167,7 +167,7 @@ while ($isTrue) {
                     unset($_SESSION['U']);
                     unset($_SESSION['P']);
 
-                    echo "\nLogging out...";
+                    echo "\nLogging out...\n";
                     $isTrueLogin = false;
                     $isTrueAccount = false;
                     $system->sleepThree();
@@ -181,7 +181,7 @@ while ($isTrue) {
                     $isTrueAccount        = false;
                     $isTrueLogin          = false;
 
-                    echo "\nLogging out...";
+                    echo "\nLogging out...\n";
                     $system->sleepOne();
                     echo "\nWe hope that you enjoy! 😎\n";
                     $system->clearThreeWaiting();
@@ -190,7 +190,7 @@ while ($isTrue) {
                   case '1':   // login -> account -> account information
                     $system->clearZeroWaiting();
 
-                    echo "\n\n------------------------Account information------------------------";
+                    echo "\n\n------------------------Account information------------------------\n";
 
                     $userInfo = $usersDB->getInformationUser($sessionSecurity->decryptRSA($_SESSION['U']));
                     if (!$userInfo->isGetInfo) {
@@ -198,7 +198,7 @@ while ($isTrue) {
                       break;
                     }
 
-                    echo "\n\nUsername: " . $sessionSecurity->decryptRSA($_SESSION['U']);
+                    echo "\nUsername: " . $sessionSecurity->decryptRSA($_SESSION['U']);
                     echo "\nPassword: " . str_repeat('*', strlen($sessionSecurity->decryptRSA($_SESSION['P'])) + 3);
                     echo "\nDate of creation: " . $userInfo->info['DateAccountCreation'];
                     echo "\nDate of last password modification: " . $userInfo->info['DatePasswordModification'];
@@ -251,7 +251,7 @@ while ($isTrue) {
                           $_SESSION['P'] = $sessionSecurity->encryptRSA($newUser->getPassword());
                           $system->sleepThree();
                         } else {
-                          echo "\nPasswords inserted don't match";
+                          echo "\nPasswords inserted don't match\n";
                           $system->sleepThree();
                           break;
                         }
@@ -280,29 +280,23 @@ while ($isTrue) {
                         case '1':   // login -> account -> booking
                           $system->clearZeroWaiting();
 
-                          echo "\n\n------------------------Choose your trip------------------------";
+                          echo "\n\n------------------------Choose your trip------------------------\n\n";
                           
                           $trip = new Trip();
   
-                          echo "\nFrom: ";
-                          $from = trim(readline());
-  
+                          $from = trim(readline('From: '));
                           if (!$trip->setFrom($from)) {
                             $system->sleepThree();
                             break;
                           }
   
-                          echo "\nTo: ";
-                          $to = trim(readline());
-  
+                          $to = trim(readline('To: '));
                           if (!$trip->setTo($to)) {
                             $system->sleepThree();
                             break;
                           }
-  
-                          echo "\nDate (format day/month/year || example => 02/09/2010): ";
-                          $date = trim(readline());
-  
+
+                          $date = trim(readline("Date (format day/month/year || example => 02/09/2010): "));  
                           if (!$trip->setDate($date)) {
                             $system->sleepThree();
                             break;
@@ -343,7 +337,7 @@ while ($isTrue) {
                           }
   
                           echo "\n\nDo you want to book one of this trips?";
-                          echo "\nInsert ----> y <---- if you want and any other to cancel: ";
+                          echo "\nInsert ----> y <---- if you want and any other to cancel\n";
                           $continueResponse = trim(readline());
   
                           if ($continueResponse != 'y') {
@@ -352,9 +346,8 @@ while ($isTrue) {
                           }
   
                           // book the trip
-                          echo "\n\n------------------------Choose your trip------------------------";
-                          echo "\nInsert the trip ID that you want to book: ";
-                          $bookID = trim(readline());
+                          echo "\n\n------------------------Choose your trip------------------------\n";
+                          $bookID = trim(readline('Insert the trip ID that you want to book'));
   
                           foreach ($tripsReturned->trips as $eachTrip) {
                             if ($bookID == $eachTrip['ID']) {
@@ -368,7 +361,7 @@ while ($isTrue) {
                           break;
   
                         default:
-                          echo "You choose $optionTrip.\nOption not available at the moment.";
+                          echo "You choose ---> $optionTrip <---\nOption not available at the moment.\n";
                           $system->sleepThree();
                       }
                     }
@@ -410,7 +403,7 @@ while ($isTrue) {
                     break;
 
                   default:
-                    echo "You choose $optionAccount.\nOption not available at the moment.";
+                    echo "You choose ---> $optionAccount <---\nOption not available at the moment.\n";
                     $system->sleepThree();
                 }
               }
@@ -421,14 +414,14 @@ while ($isTrue) {
             break;
   
           default:
-            echo "You choose $optionCreateAccount.\nOption not available at the moment.";
+            echo "You choose ---> $optionCreateAccount <---\nOption not available at the moment.\n";
             $system->sleepThree();
         }
       }
       break;
 
     default:
-      echo "You choose $option.\nOption not available at the moment.";
+      echo "You choose ---> $option <---\nOption not available at the moment.\n";
       $system->sleepThree();
   }
 }

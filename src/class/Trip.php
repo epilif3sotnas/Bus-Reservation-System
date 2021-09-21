@@ -7,7 +7,6 @@ class Trip {
 
     public function setFrom ($from) {
         $fromStandard = $this->standardString($from);
-
         if (!$fromStandard->getError()) {
             $this->from = $from;
             return true;
@@ -22,7 +21,6 @@ class Trip {
 
     public function setTo ($to) {
         $toStandard = $this->standardString($to);
-
         if (!$toStandard->getError()) {
             $this->to = $to;
             return true;
@@ -37,7 +35,6 @@ class Trip {
 
     public function setDate ($date) {
         $dateStandard = $this->dateToISO($date);
-
         if (!$dateStandard->getError()) {
             $this->date = $date;
             return true;

@@ -24,10 +24,10 @@ class User {
     public function setPassword ($password) {
       if ($this->isStrongPassword($password)) {
           $this->password = $password;
-          echo "\nStrong Password 💪\n\n";
+          echo "\nStrong Password 💪\n";
           return true;
       }
-      echo "\nPassword doesn't match the requirements 😞";
+      echo "\nPassword doesn't match the requirements 😞\n";
       $this->username = null;
       $this->password = null;
       return false;

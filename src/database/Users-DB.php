@@ -51,7 +51,7 @@ class UsersDB {
         }
 
         if (password_verify($password, $passwordFromDB)) {
-            echo "\nLogged in...";
+            echo "\nLogged in...\n";
             return true;
         }
         echo "\nAuthentication failed\n";
