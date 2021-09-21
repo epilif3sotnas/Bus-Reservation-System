@@ -45,7 +45,7 @@ class User {
       try {
         return password_hash($this->password, PASSWORD_BCRYPT);
       } catch (Exception $e) {
-        echo $e->getMessage();
+        echo "\nOccurred an error 😞\n";
       }
     }
 

@@ -28,7 +28,6 @@ class UsersDB {
             return true;
         }
         echo "\nError ocurred 😞, account wasn't created\n";
-        echo $database->error;
         return false;
     }
 
@@ -48,7 +47,6 @@ class UsersDB {
 
         if ($database->error) {
             echo "\nError ocurred 😞\n";
-            echo $database->error;
             return false;
         }
 
@@ -96,7 +94,6 @@ class UsersDB {
             return true;
         }
         echo "\nOccurred an error 😞\nPassword wasn't changed\n";
-        echo $database->error;
         return false;
     }
 

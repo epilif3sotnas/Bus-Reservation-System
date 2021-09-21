@@ -98,7 +98,7 @@ while ($isTrue) {
                 $system->sleepThree();
 
               } catch (PDOException $e) {
-                echo $e->getMessage();
+                echo "\nOccurred an error 😞\n";
                 $system->sleepThree();
               }
       
@@ -256,7 +256,7 @@ while ($isTrue) {
                           break;
                         }
                       } catch (PDOException $e) {
-                        echo $e->getMessage();
+                        echo "\nOccurred an error 😞\n";
                         $system->sleepThree();
                       }
                     }
@@ -415,7 +415,7 @@ while ($isTrue) {
                 }
               }
             } catch (PDOException $e) {
-              echo $e->getMessage();
+              echo "\nOccurred an error 😞\n";
               $system->sleepThree();
             }
             break;

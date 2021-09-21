@@ -13,7 +13,7 @@ class Trip {
             return true;
         }
 
-        echo $fromStandard->getError();
+        echo "\nOccurred an error 😞\n";
         $this->from = null;
         $this->to = null;
         $this->date = null;
@@ -28,7 +28,7 @@ class Trip {
             return true;
         }
         
-        echo $toStandard->getError();
+        echo "\nOccurred an error 😞\n";
         $this->from = null;
         $this->to = null;
         $this->date = null;
@@ -43,7 +43,7 @@ class Trip {
             return true;
         }
         
-        echo $dateStandard->getError();
+        echo "\nOccurred an error 😞\n";
         $this->from = null;
         $this->to = null;
         $this->date = null;
