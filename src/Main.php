@@ -204,61 +204,96 @@ while ($isTrue) {
                     echo "\nDate of last password modification: " . $userInfo->info['DatePasswordModification'];
 
                     echo "\n\n------------------------Options------------------------";
-                    echo "\n1 - Change password\n";
+                    echo "\n1 - Change password";
+                    echo "\n2 - Delete account";
                     echo "\nClick other button to return\n";
 
                     $optionAccountInfo = trim(readline());
-                    if ($optionAccountInfo == '1') {
-                      echo 'Insert your password: ';
-                      $password = Seld\CliPrompt\CliPrompt::hiddenPrompt();
-
-                      try {
-                        if (!$usersDB->authenticationUser($sessionSecurity->decryptRSA($_SESSION['U']),
-                                            $password, $sessionSecurity)) {     // authenticate user
+                    switch ($optionAccountInfo) {
+                      case '1':   // login -> account -> account information -> change password
+                        echo 'Insert your password: ';
+                        $password = Seld\CliPrompt\CliPrompt::hiddenPrompt();
+  
+                        try {
+                          if (!$usersDB->authenticationUser($sessionSecurity->decryptRSA($_SESSION['U']),
+                                              $password, $sessionSecurity)) {     // authenticate user
+                            $system->sleepThree();
+                            break;
+                          }
+  
+                          echo "\nRequirements of password: ";
+                          echo "\n- Minimum 8 characters in length";
+                          echo "\n- Contains 3 of 4 of the following items:";
+                          echo "\n  - Uppercase Letters";
+                          echo "\n  - Lowercase Letters";
+                          echo "\n  - Numbers";
+                          echo "\n  - Symbols\n\n";
+  
+                          $newUser = new User();
+  
+                          echo 'Insert new password: ';
+                          $newPassword = Seld\CliPrompt\CliPrompt::hiddenPrompt();
+  
+                          if (!$newUser->setPassword($password)) {
+                            $system->sleepThree();
+                            break;
+                          }
+  
+                          echo 'Confirm new password: ';
+                          $newPasswordConfirmation = Seld\CliPrompt\CliPrompt::hiddenPrompt();
+  
+                          if ($newPassword == $newPasswordConfirmation) {
+                            $newUser->setUsername($sessionSecurity->decryptRSA($_SESSION['U']));
+                            
+                            if (!$usersDB->changePassword($newUser->getUsername(), $newUser->generateHashPassword())) {
+                              $system->sleepThree();
+                              break;
+                            }
+  
+                            $_SESSION['P'] = $sessionSecurity->encryptRSA($newUser->getPassword());
+                            $system->sleepThree();
+                          } else {
+                            echo "\nPasswords inserted don't match\n";
+                            $system->sleepThree();
+                          }
+                        } catch (PDOException $e) {
+                          echo "\nOccurred an error 😞\n";
                           $system->sleepThree();
-                          break;
                         }
+                        break;
+                        
+                      case '2':   // login -> account -> account information -> delete
+                        echo 'Insert your password: ';
+                        $password = Seld\CliPrompt\CliPrompt::hiddenPrompt();
 
-                        echo "\nRequirements of password: ";
-                        echo "\n- Minimum 8 characters in length";
-                        echo "\n- Contains 3 of 4 of the following items:";
-                        echo "\n  - Uppercase Letters";
-                        echo "\n  - Lowercase Letters";
-                        echo "\n  - Numbers";
-                        echo "\n  - Symbols\n\n";
-
-                        $newUser = new User();
-
-                        echo 'Insert new password: ';
-                        $newPassword = Seld\CliPrompt\CliPrompt::hiddenPrompt();
-
-                        if (!$newUser->setPassword($password)) {
-                          $system->sleepThree();
-                          break;
-                        }
-
-                        echo 'Confirm new password: ';
-                        $newPasswordConfirmation = Seld\CliPrompt\CliPrompt::hiddenPrompt();
-
-                        if ($newPassword == $newPasswordConfirmation) {
-                          $newUser->setUsername($sessionSecurity->decryptRSA($_SESSION['U']));
-                          
-                          if (!$usersDB->changePassword($newUser->getUsername(), $newUser->generateHashPassword())) {
+                        try {
+                          if (!$usersDB->authenticationUser($sessionSecurity->decryptRSA($_SESSION['U']),
+                                              $password, $sessionSecurity)) {     // authenticate user
                             $system->sleepThree();
                             break;
                           }
 
-                          $_SESSION['P'] = $sessionSecurity->encryptRSA($newUser->getPassword());
+                          if (!$usersDB->deleteAccount($sessionSecurity->decryptRSA($_SESSION['U']))) {
+                            $system->sleepThree();
+                            break;
+                          }
+                          unset($_SESSION['U']);
+                          unset($_SESSION['P']);
+      
+                          $isTrue               = false;
+                          $isTrueAccount        = false;
+                          $isTrueLogin          = false;
+
+                          echo "\nWe hope that you enjoy! 😎\n";
+                          $system->clearThreeWaiting();
+  
+                        } catch (PDOException $e) {
+                          echo "\nOccurred an error 😞\n";
                           $system->sleepThree();
-                        } else {
-                          echo "\nPasswords inserted don't match\n";
-                          $system->sleepThree();
-                          break;
                         }
-                      } catch (PDOException $e) {
-                        echo "\nOccurred an error 😞\n";
-                        $system->sleepThree();
-                      }
+                        break;
+
+                      default:
                     }
                     break;
 

@@ -65,6 +65,14 @@ class CurrentBookingsDB {
         echo "\nOccurred an error 😞\n";
         return (object) ['currentBookings' => null, 'isGetCurrentBookings' => false];
     }
+
+    public function deleteAllBookingsByUser ($username) {
+        global $database;
+        $database->delete('CurrentBookings', [
+            'Passenger' => $username,
+        ]);
+        return $database->error ? false : true;
+    }
 }
 
 ?>

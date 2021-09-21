@@ -113,6 +113,25 @@ class UsersDB {
         echo "\nOccurred an error 😞\n";
         return false;
     }
+
+    public function deleteAccount ($username) {
+        $currentBookingsDB = new CurrentBookingsDB();
+        if (!$currentBookingsDB->deleteAllBookingsByUser($username)) {
+            echo "\nOccurred an error 😞\n";
+            return false;
+        }
+
+        global $database;
+        $database->delete('Users', [
+            'Username' => $username,
+        ]);
+        if (!$database->error) {
+            echo "\nAccount deleted successfully 😞\n";
+            return true;
+        }
+        echo "\nOccurred an error 😞\nAccount deletion wasn't succesful\n";
+        return false;
+    }
 }
 
 ?>
