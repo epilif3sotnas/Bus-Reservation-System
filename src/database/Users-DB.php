@@ -116,7 +116,7 @@ class UsersDB {
 
     public function deleteAccount ($username) {
         $currentBookingsDB = new CurrentBookingsDB();
-        if (!$currentBookingsDB->deleteAllBookingsByUser($username)) {
+        if (!$currentBookingsDB->deleteAllCurrentBookingsByUser($username)) {
             echo "\nOccurred an error 😞\n";
             return false;
         }

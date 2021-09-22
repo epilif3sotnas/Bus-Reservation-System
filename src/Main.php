@@ -262,7 +262,7 @@ while ($isTrue) {
                         }
                         break;
                         
-                      case '2':   // login -> account -> account information -> delete
+                      case '2':   // login -> account -> account information -> delete account
                         echo 'Insert your password: ';
                         $password = Seld\CliPrompt\CliPrompt::hiddenPrompt();
 
@@ -292,8 +292,6 @@ while ($isTrue) {
                           $system->sleepThree();
                         }
                         break;
-
-                      default:
                     }
                     break;
 
@@ -418,6 +416,16 @@ while ($isTrue) {
                         echo "\nTrip: " . $eachBooking['Trip'];
                         echo "\nDateTimeBooking: " . $eachBooking['DateTimeBooking'];
                       }
+                    }
+
+                    echo "\n\nDo you want to delete one of your current bookings?";
+                    echo "\nInsert ----> y <---- if you want and any other to cancel\n";
+                    $continueResponse = trim(readline());
+
+                    if ($continueResponse == 'y') {
+                      $tripID = trim(readline('Insert the trip ID that you want to delete'));
+
+                      $currentBookings->deleteCurrentBookingByUser($sessionSecurity->decryptRSA($_SESSION['U']), $tripID);
                     }
 
                     echo "\n\n------------------------Past Bookings------------------------";

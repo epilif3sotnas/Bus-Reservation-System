@@ -66,12 +66,32 @@ class CurrentBookingsDB {
         return (object) ['currentBookings' => null, 'isGetCurrentBookings' => false];
     }
 
-    public function deleteAllBookingsByUser ($username) {
+    public function deleteAllCurrentBookingsByUser ($username) {
         global $database;
         $database->delete('CurrentBookings', [
             'Passenger' => $username,
         ]);
         return $database->error ? false : true;
+    }
+
+    public function deleteCurrentBookingByUser ($username, $tripID) {
+        global $database;
+        $database->delete('CurrentBookings', [
+            'AND' => [
+                'Passenger' => $username,
+                'Trip' => $tripID,
+            ]
+        ]);
+
+        if (!$database->error) {
+            $tripsDB = new TripsDB();
+            if ($tripsDB->subtractPassenger($tripID)) {
+                echo "\nBook deleted successfully\n";
+                return true;
+            }
+        }
+        echo "\nOccurred an error 😞\n";
+        return false;
     }
 }
 

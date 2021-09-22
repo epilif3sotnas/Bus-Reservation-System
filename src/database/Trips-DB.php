@@ -102,6 +102,17 @@ class TripsDB {
 
         return $database->error ? false : true;
     }
+
+    public function subtractPassenger ($ID) {
+        global $database;
+        $database->update('Trips',[
+            'Passengers[-]' => 1,
+        ], [
+            'ID' => $ID,
+        ]);
+
+        return $database->error ? false : true;
+    }
 }
 
 ?>
