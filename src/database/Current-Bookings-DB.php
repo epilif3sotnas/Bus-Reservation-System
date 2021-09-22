@@ -67,10 +67,21 @@ class CurrentBookingsDB {
     }
 
     public function deleteAllCurrentBookingsByUser ($username) {
+        $returnedCurrentBookings = $this->getBookingByUser($username);
+        if (!$returnedCurrentBookings->isGetCurrentBookings) {
+            return false;
+        }
         global $database;
-        $database->delete('CurrentBookings', [
+        $pdoObj = $database->delete('CurrentBookings', [
             'Passenger' => $username,
         ]);
+        if ($pdoObj->rowCount() > 0) {
+            $tripsDB = new TripsDB();
+            foreach ($returnedCurrentBookings->currentBookings as $booking) {
+                $tripsDB->subtractPassenger($booking['Trip']);
+            }
+        }
+
         return $database->error ? false : true;
     }
 

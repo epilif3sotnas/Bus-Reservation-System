@@ -94,7 +94,7 @@ class TripsDB {
 
     public function addPassenger ($ID) {
         global $database;
-        $database->update('Trips',[
+        $database->update('Trips', [
             'Passengers[+]' => 1,
         ], [
             'ID' => $ID,
@@ -105,7 +105,7 @@ class TripsDB {
 
     public function subtractPassenger ($ID) {
         global $database;
-        $database->update('Trips',[
+        $database->update('Trips', [
             'Passengers[-]' => 1,
         ], [
             'ID' => $ID,

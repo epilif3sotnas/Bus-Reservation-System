@@ -280,9 +280,8 @@ while ($isTrue) {
                           unset($_SESSION['U']);
                           unset($_SESSION['P']);
       
-                          $isTrue               = false;
-                          $isTrueAccount        = false;
-                          $isTrueLogin          = false;
+                          $isTrueAccount  = false;
+                          $isTrueLogin    = false;
 
                           echo "\nWe hope that you enjoy! 😎\n";
                           $system->clearThreeWaiting();
