@@ -19,7 +19,7 @@ include 'system/Clear-CLI.php';
 $sessionSecurity = new SessionSecurity();
 $cypher = getCypherRSA();
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/database");
 $dotenv->safeLoad();
 
 $database = new Medoo\Medoo([
