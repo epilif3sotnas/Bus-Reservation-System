@@ -17,6 +17,20 @@ include 'error/Trip-Date-Err.php';
 include 'system/Clear-CLI.php';
 
 $sessionSecurity = new SessionSecurity();
+$cypher = getCypherRSA();
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->safeLoad();
+
+$database = new Medoo\Medoo([
+    'type'      => $_ENV['TYPE_DB'],
+    'host'      => $_ENV['HOST_DB'],
+    'database'  => $_ENV['DATABASE_DB'],
+    'username'  => $_ENV['USERNAME_DB'],
+    'password'  => $_ENV['PASSWORD_DB'],
+
+    'error'     => PDO::ERRMODE_WARNING,
+]);
 
 $usersDB = new UsersDB();
 $tripsDB = new TripsDB();

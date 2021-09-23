@@ -10,8 +10,7 @@ class User {
         return true;
       }
       
-      $usersDB = new UsersDB();
-
+      global $usersDB;
       if ($usersDB->isAvailableUsername($username)) {
         $this->username = $username;
         return true;

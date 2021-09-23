@@ -3,8 +3,6 @@
 use phpseclib3\Crypt\AES;
 use phpseclib3\Crypt\Random;
 
-$cypher = getCypherRSA();
-
 class SessionSecurity {
     public function encryptRSA ($text) {
         global $cypher;

@@ -1,22 +1,8 @@
 <?php
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->safeLoad();
-
-$database = new Medoo\Medoo([
-    'type'      => $_ENV['TYPE_DB'],
-    'host'      => $_ENV['HOST_DB'],
-    'database'  => $_ENV['DATABASE_DB'],
-    'username'  => $_ENV['USERNAME_DB'],
-    'password'  => $_ENV['PASSWORD_DB'],
-
-    'error'     => PDO::ERRMODE_WARNING,
-]);
-
 class CurrentBookingsDB {
-
     public function makeBook ($trip, $username) {
-        $tripsDB = new TripsDB();
+        global $tripsDB;
         $busReturned = $tripsDB->getBus($trip['Bus']);
         if (!$busReturned->isGetBus) {
             echo "\nError ocurred 😞, book wasn't made\n";
@@ -76,7 +62,7 @@ class CurrentBookingsDB {
             'Passenger' => $username,
         ]);
         if ($pdoObj->rowCount() > 0) {
-            $tripsDB = new TripsDB();
+            global $tripsDB;
             foreach ($returnedCurrentBookings->currentBookings as $booking) {
                 $tripsDB->subtractPassenger($booking['Trip']);
             }
@@ -95,7 +81,7 @@ class CurrentBookingsDB {
         ]);
 
         if (!$database->error) {
-            $tripsDB = new TripsDB();
+            global $tripsDB;
             if ($tripsDB->subtractPassenger($tripID)) {
                 echo "\nBook deleted successfully\n";
                 return true;
