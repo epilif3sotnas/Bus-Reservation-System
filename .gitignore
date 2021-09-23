@@ -4,3 +4,7 @@
 
 .env
 composer.lock
+
+/src/database/ddl
+
+CHANGELOG-private.md
