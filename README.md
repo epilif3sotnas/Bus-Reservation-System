@@ -21,11 +21,9 @@ In this repository was build a system to do bus reservations. For now, the repos
 Commands to run it:
 
 ```
-cd {PATH_REPOSITORY}/src
-```
+cd {PATH_REPOSITORY}/src;
 
-```
-php Main.php
+php Main.php;
 ```
 
 
