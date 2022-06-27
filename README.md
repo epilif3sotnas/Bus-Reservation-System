@@ -22,7 +22,6 @@ Commands to run it:
 
 ```
 cd {PATH_REPOSITORY}/src;
-
 php Main.php;
 ```
 
