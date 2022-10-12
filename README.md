@@ -1,4 +1,4 @@
-# About BusReservationSystem
+## About BusReservationSystem
 
 In this repository was build a system to do bus reservations. For now, the repository don't have in consideration payment and transaction but has the following things:
 
@@ -10,13 +10,13 @@ In this repository was build a system to do bus reservations. For now, the repos
 - See current and past bookings
 
 
-# Requirements
+## Requirements
 
 - PHP 8.0 or higher
 - PostgreSQL 13 or higher
 
 
-# Run
+## Run
 
 Commands to run it:
 
@@ -26,7 +26,7 @@ php Main.php;
 ```
 
 
-# Technologies used
+## Technologies used
 
 - [PHP](https://www.php.net/manual/en/)
 - [PostgreSQL](https://www.postgresql.org/docs/13/index.html)
@@ -36,6 +36,6 @@ php Main.php;
 - [cli-prompt](https://github.com/Seldaek/cli-prompt)
 
 
-# License
+## License
 
 Licensed under the MIT license.
